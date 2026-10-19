@@ -2042,7 +2042,7 @@ function makeDraggable(el, container) {
         }, { once: true }), 50);
       }
     } else if (id) {
-      itemPositions[id] = { x: parseFloat(el.style.left), y: parseFloat(el.style.top) };
+      itemPositions[id] = { ...itemPositions[id], x: parseFloat(el.style.left), y: parseFloat(el.style.top) }; // 크기(s) 유지
       saveData();
     }
   }
