@@ -1956,7 +1956,7 @@ function renderRoom() {
 
   const avatarItems = ownedItems.filter(it => getItemZone(it) === 'avatar');
   const _rawPos = itemPositions['__lily__'] || { x: 28, y: 18 };
-  const lilyPos = (_rawPos.x >= 0 && _rawPos.x <= 75 && _rawPos.y >= 0 && _rawPos.y <= 68)
+  const lilyPos = (_rawPos.x >= -100 && _rawPos.x <= 88 && _rawPos.y >= -100 && _rawPos.y <= 88) // 드래그 허용 범위와 동일
     ? _rawPos : (() => { itemPositions['__lily__'] = { x: 28, y: 18 }; saveData(); return { x: 28, y: 18 }; })();
   html += `<div class="rc-lily rc-draggable" data-id="__lily__" style="left:${lilyPos.x}%;top:${lilyPos.y}%">${buildLilyAvatarImage(unlockedItems, avatarItems)}</div>`;
 
