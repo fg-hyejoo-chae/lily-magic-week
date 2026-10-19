@@ -1968,7 +1968,7 @@ function renderRoom() {
 
 /* ── DRAG TO REPOSITION ── */
 function makeDraggable(el, container) {
-  let startClientX, startClientY, startLeft, startTop, didDrag = false, orderChanged = false;
+  let startClientX, startClientY, startLeft, startTop, minLeft = 0, minTop = 0, didDrag = false, orderChanged = false;
 
   function getClient(e) {
     return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
@@ -1991,6 +1991,10 @@ function makeDraggable(el, container) {
     }
     startLeft = parseFloat(el.style.left) || 0;
     startTop  = parseFloat(el.style.top)  || 0;
+    // 방보다 큰 아이템은 왼쪽/위로도 밀 수 있게 (오른쪽·아래 끝이 방 끝에 닿을 때까지)
+    const elRect0 = el.getBoundingClientRect();
+    minLeft = Math.min(0, 100 - elRect0.width / rect.width * 100);
+    minTop  = Math.min(0, 100 - elRect0.height / rect.height * 100);
     el.style.zIndex = el.dataset.id === '__lily__' ? '60' : '20'; // 드래그 중에도 아바타가 항상 위
     el.style.transition = 'none';
     el.classList.add('dragging');
@@ -2016,8 +2020,8 @@ function makeDraggable(el, container) {
     }
     if (!didDrag) return;
     const rect = container.getBoundingClientRect();
-    const newLeft = Math.max(0, Math.min(88, startLeft + (x - startClientX) / rect.width  * 100));
-    const newTop  = Math.max(0, Math.min(88, startTop  + (y - startClientY) / rect.height * 100));
+    const newLeft = Math.max(minLeft, Math.min(88, startLeft + (x - startClientX) / rect.width  * 100));
+    const newTop  = Math.max(minTop, Math.min(88, startTop  + (y - startClientY) / rect.height * 100));
     el.style.left = newLeft + '%';
     el.style.top  = newTop  + '%';
   }
